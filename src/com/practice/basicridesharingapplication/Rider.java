@@ -31,14 +31,19 @@ public class Rider extends Person {
     public void updateRide(int id, int origin, int dest, int seats) {
 
         Iterator<Ride> itr = allRides.iterator();
+        Ride r = null;
         while(itr.hasNext()) {
-            if(itr.next().getId() == id) {
+            r = itr.next();
+            if(r.getId() == id) {
                 break;
             }
         }
 
-        if(itr.next().getRideStatus() != Ride.RideStatus.CREATED) {
-            System.out.println("Ride wasn't in progress, Can't update ride");
+        if(r == null) {
+            return;
+        }
+
+        if(r.getRideStatus() != Ride.RideStatus.CREATED) {
             return;
         }
         /*int i = 0;
@@ -56,46 +61,60 @@ public class Rider extends Person {
         /*allRides.get(i).setOrigin(origin);
         allRides.get(i).setDest(dest);
         allRides.get(i).setSeats(seats);*/
-        itr.next().setOrigin(origin);
-        itr.next().setDest(dest);
-        itr.next().setSeats(seats);
+            r.setOrigin(origin);
+            r.setDest(dest);
+            r.setSeats(seats);
+
+
 
     }
 
     public void withdrawRide(int id) {
 
         Iterator<Ride> itr = allRides.iterator();
+        Ride r = null;
         while(itr.hasNext()) {
-            if(itr.next().getId() == id) {
+            r = itr.next();
+            if(r.getId() == id) {
                 break;
             }
         }
 
-        if(itr.next().getRideStatus() != Ride.RideStatus.CREATED) {
+        if(r == null) {
+            return;
+        }
+
+        if(r.getRideStatus() != Ride.RideStatus.CREATED) {
             System.out.println("Ride wasn't in progress, Can't withdraw ride");
             return;
         }
 
-        itr.next().setRideStatus(Ride.RideStatus.WITHDRAWN);
-        allRides.remove(itr.next());
+        r.setRideStatus(Ride.RideStatus.WITHDRAWN);
+        allRides.remove(r);
     }
 
     public double closeRide(int id) {
 
         Iterator<Ride> itr = allRides.iterator();
+        Ride r = null;
         while(itr.hasNext()) {
-            if(itr.next().getId() == id) {
+            r = itr.next();
+            if(r.getId() == id) {
                 break;
             }
         }
 
-        if(itr.next().getRideStatus() != Ride.RideStatus.CREATED) {
+        if(r == null) {
+            return 0;
+        }
+
+        if(r.getRideStatus() != Ride.RideStatus.CREATED) {
             System.out.println("Ride wasn't in progress, Can't close ride");
             return 0;
         }
 
-        itr.next().setRideStatus(Ride.RideStatus.COMPLETED);
-        return itr.next().calculateFare(allRides.size() >= 10);
+        r.setRideStatus(Ride.RideStatus.COMPLETED);
+        return r.calculateFare(allRides.size() >= 10);
     }
 
 
